@@ -2,17 +2,18 @@
 $jqueryScriptUrl = Helper::options()->pluginUrl . '/Like/js/jquery.js';
 $macaroonScriptUrl = Helper::options()->pluginUrl . '/Like/js/jquery.fs.macaroon.js';
 $settings = Helper::options()->plugin('Like');
-$thumbUpImg = Helper::options()->pluginUrl . '/Like/thumb_up.png';
-if($settings->jquery){
-   echo '<script src="'.$jqueryScriptUrl.'"></script>'; 
-}
 ?>
-    <style type='text/css'>
-		.fa-thumbs-up{margin-right: 5px;top: 2px;width: 16px;height: 16px;display: inline-block; background: url(<?php echo $thumbUpImg; ?>) no-repeat left center; }
-    </style>
 
+<script type="text/javascript" src="<?php echo $jqueryScriptUrl; ?>"></script>
 <script type="text/javascript" src="<?php echo $macaroonScriptUrl; ?>"></script>
 <script>
+    $(function() {
+        var th = $(".<?php echo $settings->likeClass; ?>");
+        var id = th.attr('data-pid');
+        var cookies = $.macaroon('_syan_like') || "";
+        if (-1 !== cookies.indexOf("," + id + ",")) {
+            th.find('section').toggleClass("done");
+        }});
     $(".<?php echo $settings->likeClass; ?>").on("click", function(){
     	var th = $(this);
 		var id = th.attr('data-pid');
@@ -25,9 +26,11 @@ if($settings->jquery){
 		$.post('<?php Helper::options()->index('/action/like?up'); ?>',{
 		cid:id
 		},function(data){
-		th.addClass('actived');
-		var zan = th.find('span').text();
-		th.find('span').text(parseInt(zan) + 1);
+		// th.addClass('actived');
+            th.find('section').toggleClass("active");
+        //     th.toggleClass("active");
+            var zan = th.find('span').text();
+            th.find('span').text(parseInt(zan) + 1);
 		},'json');
 	});
 </script>

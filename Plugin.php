@@ -2,7 +2,7 @@
 
 /**
  * Typecho 点赞插件
- * 
+ *
  * @package Like
  * @author skylzl
  * @version 1.0.1
@@ -13,13 +13,14 @@ class Like_Plugin implements Typecho_Plugin_Interface
 {
     /**
      * 激活插件方法,如果激活失败,直接抛出异常
-     * 
+     *
      * @access public
      * @return void
      * @throws Typecho_Plugin_Exception
      */
     public static function activate()
     {
+        Typecho_Plugin::factory('Widget_Archive')->footer = array('Like_Plugin', 'header');
         Typecho_Plugin::factory('Widget_Archive')->footer = array('Like_Plugin', 'footer');
         Helper::addAction('like', 'Like_Action');
         $db = Typecho_Db::get();
@@ -32,19 +33,19 @@ class Like_Plugin implements Typecho_Plugin_Interface
 
     /**
      * 禁用插件方法,如果禁用失败,直接抛出异常
-     * 
+     *
      * @static
      * @access public
      * @return void
      * @throws Typecho_Plugin_Exception
      */
     public static function deactivate(){
-    	Helper::removeAction('like');
+        Helper::removeAction('like');
     }
-    
+
     /**
      * 获取插件配置面板
-     * 
+     *
      * @access public
      * @param Typecho_Widget_Helper_Form $form 配置面板
      * @return void
@@ -52,26 +53,21 @@ class Like_Plugin implements Typecho_Plugin_Interface
     public static function config(Typecho_Widget_Helper_Form $form){
         /** 文章页A标签点赞的class */
         $likeClass = new Typecho_Widget_Helper_Form_Element_Text(
-            'likeClass',NULL ,'post-like', 
+            'likeClass',NULL ,'post-like',
             _t('点赞A标签的class'),
             _t('点赞的自定义样式，默认为.post-like。可自定义CSS样式，无需加.')
         );
-        /** 是否加载jquery */
-        $jquery = new Typecho_Widget_Helper_Form_Element_Radio(
-        'jquery', array('0'=> '手动加载', '1'=> '自动加载'), 0, '选择jQuery来源',
-            '若选择"手动加载",则需要你手动加载jQuery到你的主题里,若选择"自动加载",本插件会自动加载jQuery到你的主题里。');
-        $form->addInput($jquery);        
-        $form->addInput($likeClass);           
+        $form->addInput($likeClass);
     }
 
     /**
      * 个人用户的配置面板
-     * 
+     *
      * @access public
      * @param Typecho_Widget_Helper_Form $form
      * @return void
      */
-    public static function personalConfig(Typecho_Widget_Helper_Form $form){     
+    public static function personalConfig(Typecho_Widget_Helper_Form $form){
     }
 
      /**
@@ -86,14 +82,15 @@ class Like_Plugin implements Typecho_Plugin_Interface
      * @access public
      * @param bool    $link   是否输入链接 (false为显示纯数字)
      * @return string
-     */  
+     */
     public static function theLike($link = true){
         $db = Typecho_Db::get();
         $cid = Typecho_Widget::widget('Widget_Archive')->cid;
         $row = $db->fetchRow($db->select('likes')->from('table.contents')->where('cid = ?', $cid));
         if($link){
             $settings = Helper::options()->plugin('Like');
-            echo '<a href="javascript:;" class="'.$settings->likeClass.'" data-pid="'.$cid.'"><i class="fa-thumbs-up"></i>赞 (<span>'.$row['likes'].'</span>)</a>';
+            //echo '<a href="javascript:;" class="'.$settings->likeClass.'" data-pid="'.$cid.'"><img src = "https://idealclover.top/like.png"> (<span>'.$row['likes'].'</span>)   点赞需要刷新一下页面~(*/ω＼*)</a>';
+	        echo '<a href="javascript:;" class="'.$settings->likeClass.'" data-pid="'.$cid.'" style="margin: 0 auto;"><section class="fave"><span class="likeCount">'.$row['likes'].'</span></section></a>';
         }else{
             echo $row['likes'];
         }
@@ -139,11 +136,19 @@ class Like_Plugin implements Typecho_Plugin_Interface
             echo "<li>N/A</li>\n";
         }
     }
-    
+
+    /**
+     * 点赞相关css加载在头部
+     */
+    public static function header() {
+        $cssUrl = Helper::options()->pluginUrl . '/Like/css/style.css';
+        echo '<link rel="stylesheet" type="text/css" href="' . $cssUrl . '" />';
+    }
+
     /**
      * 点赞相关js加载在尾部
      */
-    public static function footer() {    
+    public static function footer() {
         include 'like-js.php';
-    }    
+    }
 }
