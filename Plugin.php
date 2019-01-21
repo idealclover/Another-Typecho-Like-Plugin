@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Typecho 点赞插件
+ * 又一款 Typecho 点赞插件
  *
- * @package Like
- * @author skylzl
- * @version 1.0.1
- * @link http://www.phoneshuo.com
+ * @package AnotherLike
+ * @author idealclover
+ * @version 1.0.0
+ * @link https://idealclover.top
  */
 
 class Like_Plugin implements Typecho_Plugin_Interface
