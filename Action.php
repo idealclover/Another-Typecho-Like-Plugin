@@ -4,19 +4,19 @@
  *
  * @copyright  Copyright (c) 2014 skylzl (http://www.woyoudian.com)
  * @license    GNU General Public License 2.0
- * 
+ *
  */
 
-class Like_Action extends Typecho_Widget implements Widget_Interface_Do
+class AnotherLike_Action extends Typecho_Widget implements Widget_Interface_Do
 {
     private $db;
 
     public function __construct($request, $response, $params = NULL)
     {
         parent::__construct($request, $response, $params);
-        $this->db = Typecho_Db::get();        
+        $this->db = Typecho_Db::get();
     }
-    
+
     /**
      * 点赞Like
      */
@@ -26,14 +26,14 @@ class Like_Action extends Typecho_Widget implements Widget_Interface_Do
             try {
                 $row = $this->db->fetchRow($this->db->select('likes')->from('table.contents')->where('cid = ?', $cid));
                 $this->db->query($this->db->update('table.contents')->rows(array('likes' => (int)$row['likes']+1))->where('cid = ?', $cid));
-                $this->response->throwJson("success");                
+                $this->response->throwJson("success");
             } catch (Exception $ex) {
-               echo $ex->getCode(); 
+               echo $ex->getCode();
             }
         }  else {
             echo "error";
         }
-      
+
     }
 
     public function action(){

@@ -9,7 +9,7 @@
  * @link https://idealclover.top
  */
 
-class Like_Plugin implements Typecho_Plugin_Interface
+class AnotherLike_Plugin implements Typecho_Plugin_Interface
 {
     /**
      * 激活插件方法,如果激活失败,直接抛出异常
@@ -20,9 +20,9 @@ class Like_Plugin implements Typecho_Plugin_Interface
      */
     public static function activate()
     {
-        Typecho_Plugin::factory('Widget_Archive')->footer = array('Like_Plugin', 'header');
-        Typecho_Plugin::factory('Widget_Archive')->footer = array('Like_Plugin', 'footer');
-        Helper::addAction('like', 'Like_Action');
+        Typecho_Plugin::factory('Widget_Archive')->footer = array('AnotherLike_Plugin', 'header');
+        Typecho_Plugin::factory('Widget_Archive')->footer = array('AnotherLike_Plugin', 'footer');
+        Helper::addAction('like', 'AnotherLike_Action');
         $db = Typecho_Db::get();
         $prefix = $db->getPrefix();
         // contents 如果没有likes字段，则添加
@@ -73,10 +73,10 @@ class Like_Plugin implements Typecho_Plugin_Interface
      /**
      * 输出点赞链接或者点赞次数
      *
-     * 语法: Like_Plugin::theLike();
+     * 语法: AnotherLike_Plugin::theLike();
      * 输出: '<a href="javascript:;" class="post-like" data-pid="'.$cid.'">赞 (<span>'.$row['like'].'</span>)</a>'
      *
-     * 语法: Like_Plugin::theLike(false);
+     * 语法: AnotherLike_Plugin::theLike(false);
      * 输出: 0
      *
      * @access public
@@ -88,9 +88,10 @@ class Like_Plugin implements Typecho_Plugin_Interface
         $cid = Typecho_Widget::widget('Widget_Archive')->cid;
         $row = $db->fetchRow($db->select('likes')->from('table.contents')->where('cid = ?', $cid));
         if($link){
-            $settings = Helper::options()->plugin('Like');
+            $settings = Helper::options()->plugin('AnotherLike');
             //echo '<a href="javascript:;" class="'.$settings->likeClass.'" data-pid="'.$cid.'"><img src = "https://idealclover.top/like.png"> (<span>'.$row['likes'].'</span>)   点赞需要刷新一下页面~(*/ω＼*)</a>';
-	        echo '<a href="javascript:;" class="'.$settings->likeClass.'" data-pid="'.$cid.'" style="margin: 0 auto;"><section class="fave"><span class="likeCount">'.$row['likes'].'</span></section></a>';
+	        // echo '<a href="javascript:;" class="'.$settings->likeClass.'" data-pid="'.$cid.'" style="margin: 0 auto;"><section class="fave"><span class="likeCount">'.$row['likes'].'</span></section></a>';
+            echo '<a href="javascript:;" class="'.$settings->likeClass.'" data-pid="'.$cid.'"><div><div class="fave" style="width: 50px;height: 50px;"></div><p class="likeCount">'.$row['likes'].'</p></div></a>';
         }else{
             echo $row['likes'];
         }
@@ -99,7 +100,7 @@ class Like_Plugin implements Typecho_Plugin_Interface
     /**
      * 输出点赞最多的文章
      *
-     * 语法: Like_Plugin::theMostLiked();
+     * 语法: AnotherLike_Plugin::theMostLiked();
      *
      * @access public
      * @param int     $limit  文章数目
@@ -124,7 +125,7 @@ class Like_Plugin implements Typecho_Plugin_Interface
                 $post_likes = number_format($result['likes']);
                 $post_title = htmlspecialchars($result['title']);
                 $permalink = $result['permalink'];
-                $settings = Helper::options()->plugin('Like');
+                $settings = Helper::options()->plugin('AnotherLike');
                 if($showlink == true){
                 	echo "<li><a href='$permalink' title='$post_title'>$post_title</a><span style='font-size:70%'><br/><a href='javascript:;' class='$settings->likeClass' data-pid='$cid'><i class='fa-thumbs-up'></i>赞 (<span>'$post_likes</span>)</a></span></li>\n";
               	}else{
@@ -141,7 +142,7 @@ class Like_Plugin implements Typecho_Plugin_Interface
      * 点赞相关css加载在头部
      */
     public static function header() {
-        $cssUrl = Helper::options()->pluginUrl . '/Like/css/style.css';
+        $cssUrl = Helper::options()->pluginUrl . '/AnotherLike/css/style.css';
         echo '<link rel="stylesheet" type="text/css" href="' . $cssUrl . '" />';
     }
 
