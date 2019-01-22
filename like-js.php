@@ -2,10 +2,13 @@
 $jqueryScriptUrl = Helper::options()->pluginUrl . '/AnotherLike/js/jquery.js';
 $macaroonScriptUrl = Helper::options()->pluginUrl . '/AnotherLike/js/jquery.fs.macaroon.js';
 $settings = Helper::options()->plugin('AnotherLike');
+if($settings->jquery){
+   echo '<script type="text/javascript" src="'.$jqueryScriptUrl.'"></script>';
+}
 ?>
 
-<script type="text/javascript" src="<?php echo $jqueryScriptUrl; ?>"></script>
 <script type="text/javascript" src="<?php echo $macaroonScriptUrl; ?>"></script>
+
 <script>
     $(function() {
         var th = $(".<?php echo $settings->likeClass; ?>");
@@ -24,7 +27,7 @@ $settings = Helper::options()->plugin('AnotherLike');
 (1).split(","), cookies.splice(0, 1), cookies.push(id), cookies = cookies.join(","), $.macaroon("_syan_like", "," + cookies +
 ",")) : $.macaroon("_syan_like", cookies + id + ",") : $.macaroon("_syan_like", "," + id + ",");
 		$.post('<?php Helper::options()->index('/action/like?up'); ?>',{
-		cid:id
+            cid:id
 		},function(data){
 		    // th.addClass('actived');
             th.find('div.fave').toggleClass("active");
