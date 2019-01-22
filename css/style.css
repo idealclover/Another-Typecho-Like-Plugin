@@ -31,6 +31,9 @@
 
 .likeCount{
     display: inline;
+}
+
+.likeCount.single{
     vertical-align:bottom;
     padding-left: 3px;
     /* font-family: 'Georgia', Times, Times New Roman, serif; */
