@@ -1,3 +1,26 @@
-## 插件说明 ##
-####typecho点赞like插件，调用<?php Like_Plugin::theLike(); ?>即可
-####详细介绍：http://www.phoneshuo.com/PHP/typecho-like-plugin.html
+
+> 又一款typecho点赞插件AnotherLike
+> Another typecho like plugin AnotherLike
+
+## 效果展示
+
+[](img/Screenshot.gif)
+
+## 插件启用
+
+Clone这个仓库到 {typecho目录}/usr/plugins
+Clone this repository to {typecho}/usr/plugins
+
+重命名为```AnotherLike```（区分大小写）
+rename it to ```AnotherLike```(case sensitive)
+
+在admin平台中启用插件
+Launch the plugin in admin.
+
+## 调用接口
+
+单个文章点赞
+<?php AnotherLike_Plugin::theLike(); ?>
+
+输出点赞数最多的文章
+<?php AnotherLike_Plugin::theMostLiked(); ?>
