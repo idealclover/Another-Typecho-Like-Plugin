@@ -4,7 +4,7 @@
 
 ## 效果展示
 
-[](img/Screenshot.gif)
+![](img/Screenshot.gif)
 
 ## 插件启用
 
